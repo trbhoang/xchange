@@ -1,7 +1,9 @@
 // create a new express router
 const express = require("express"),
     router = express.Router(),
+    { requiresLogin } = require("./middlewares"),
     mainController = require("./controllers/main.controller"),
+    authController = require("./controllers/auth.controller"),
     adminController = require("./controllers/admin.controller");
 
 // eventsController = require("./controllers/events.controller");
@@ -12,9 +14,11 @@ module.exports = router;
 // define routes
 // main routes
 router.get("/", mainController.showHome);
+router.get("/profile", requiresLogin, mainController.showProfile);
 
 // auth routes
-// router.post("/login", authController.processLogin);
+router.post("/login", authController.processLogin);
+router.get("/logout", authController.processLogout);
 
 // admin routes
 router.get("/admin", adminController.showHome);

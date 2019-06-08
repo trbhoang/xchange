@@ -7,6 +7,11 @@
     <div class="container">
         <div class="columns is-mobile is-centered">
             <div class="column is-half">
+                <% if (message.length > 0) { %>
+                <div class="notification is-danger">
+                    <%= message %>
+                </div>
+                <% } %>
                 <form action="/login" method="POST">
                     <div class="field">
                         <div class="control has-icons-left has-icons-right">

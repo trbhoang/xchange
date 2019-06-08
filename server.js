@@ -11,7 +11,16 @@ const express = require("express"),
     session = require("express-session"),
     cookieParser = require("cookie-parser"),
     flash = require("connect-flash"),
-    expressValidator = require("express-validator");
+    expressValidator = require("express-validator"),
+    connectMongoDBSession = require("connect-mongodb-session"),
+    SessionStore = connectMongoDBSession(session),
+    sessionStore = new SessionStore({
+        uri: process.env.DB_URL,
+        collection: "sessions"
+    });
+
+// connect to database
+mongoose.connect(process.env.DB_URL);
 
 // configure our application ===================
 // set sessions and cookie parser
@@ -20,9 +29,10 @@ app.use(
     session({
         name: "sid", // name of the session ID cookie to set in the response (and read from in the request).
         secret: "AagtCnvIdrVeRvI0Cwf6HSmPoitsE4vl",
-        cookie: { maxAge: 60000 },
-        resave: false, // forces the session to be saved back to the store
-        saveUninitialized: true // dont save unmodified
+        cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
+        resave: true, // forces the session to be saved back to the store
+        saveUninitialized: true, // dont save unmodified
+        store: sessionStore
     })
 );
 app.use(flash());
@@ -35,12 +45,15 @@ app.set("views", "./app/views");
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 
-// connect to our database
-mongoose.connect(process.env.DB_URL);
-
 // use body parser to grab info from a form
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
+// make logged in user object available in all templates
+app.use(function(req, res, next) {
+    req.isAuthenticated = req.session && req.session.user ? true : false;
+    res.locals.currentUser = req.session.user;
+    next();
+});
 
 // set the routes =============================
 app.use(require("./app/routes"));
