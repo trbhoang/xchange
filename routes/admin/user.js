@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-var { User } = require("./../../models/admin/user");
+var { User } = require("../../models/user");
 
 // Get All User Data
 router.get("/", (req, res) => {

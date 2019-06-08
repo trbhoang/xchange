@@ -1,10 +1,10 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
 // Home Page - Route
-router.use('/', require('./user/home'))
+router.use("/", require("./user/home"));
 // Admin Page - Route
-router.use('/admin', require('./admin/home'))
-router.use('/admin/user', require('./admin/user'))
+router.use("/admin", require("./admin/home"));
+router.use("/admin/user", require("./admin/user"));
 
 module.exports = router;
