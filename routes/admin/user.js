@@ -17,20 +17,36 @@ router.get("/", (req, res) => {
 });
 
 // Add New User Data
-router.post("/", (req, res, next) => {
-    var user = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
-    user.save().then(
-        doc => {
-            //res.send(doc);
-            res.redirect("back");
-        },
-        e => {
-            res.status(400).send(e);
-        }
-    );
+router.post("/", async (req, res, next) => {
+    console.log(req.body);
+    try {
+        const user = await User.create({
+            username: req.body.username,
+            password: req.body.password,
+            group: req.body.group
+        });
+        console.log(user);
+        res.redirect("back");
+    } catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+    // var user = new User({
+    //     username: req.body.username,
+    //     password: req.body.password,
+    //     group: req.body.group
+    // });
+    // console.log(user);
+    // user.save().then(
+    //     doc => {
+    //         //res.send(doc);
+    //         console.log(doc);
+    //         res.redirect("back");
+    //     },
+    //     e => {
+    //         res.status(400).send(e);
+    //     }
+    // );
 });
 
 // Get Single User Data

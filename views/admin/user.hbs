@@ -35,7 +35,7 @@
 								<tr>
 									<th>Id</th>
 									<th>Username</th>
-									<th>Password</th>
+									<th>Group</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -43,14 +43,15 @@
 								{{#each data.users as |user|}}
 								<tr>
 									<td>{{user.id}}</td>
-									<td>{{user.email}}</td>
-									<td>{{user.password}}</td>
+									<td>{{user.username}}</td>
+									<td>{{user.group}}</td>
 									<td>
-										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-User"
-											onclick="userAction('{{user.id}}','edit')">
+										<button type="button" class="btn btn-warning" data-toggle="modal"
+											data-target="#modal-User" onclick="userAction('{{user.id}}','edit')">
 											<i class="fa fa-edit"></i>
 										</button>
-										<button type="button" class="btn btn-danger" onclick="userAction('{{user.id}}','delete')">
+										<button type="button" class="btn btn-danger"
+											onclick="userAction('{{user.id}}','delete')">
 											<i class="fa fa-trash"></i>
 										</button>
 									</td>
@@ -85,21 +86,29 @@
 				<form class="form-horizontal" id="modalForm" action="/admin/user" method="POST">
 					<div class="box-body">
 						<div class="form-group">
-							<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+							<label for="inputEmail3" class="col-sm-2 control-label">Username</label>
 
 							<div class="col-sm-10">
 								<input type="hidden" id="_id" name="_id">
-								<input type="email" id="email" name="email" class="form-control" placeholder="Email">
+								<input type="text" id="username" name="username" class="form-control"
+									placeholder="Username">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 
 							<div class="col-sm-10">
-								<input type="password" id="password" name="password" class="form-control" placeholder="Password">
+								<input type="password" id="password" name="password" class="form-control"
+									placeholder="Password">
 							</div>
 						</div>
+						<div class="form-group">
+							<label for="inputGroup3" class="col-sm-2 control-label">Group</label>
 
+							<div class="col-sm-10">
+								<input type="text" id="group" name="group" class="form-control" placeholder="Group">
+							</div>
+						</div>
 					</div>
 					<!-- /.box-body -->
 					<div class="box-footer">
