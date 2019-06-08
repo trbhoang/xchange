@@ -15,12 +15,12 @@ const express = require("express"),
     connectMongoDBSession = require("connect-mongodb-session"),
     SessionStore = connectMongoDBSession(session),
     sessionStore = new SessionStore({
-        uri: process.env.DB_URL,
+        uri: process.env.DB_URI,
         collection: "sessions"
     });
 
 // connect to database
-mongoose.connect(process.env.DB_URL);
+mongoose.connect(process.env.DB_URI);
 
 // configure our application ===================
 // set sessions and cookie parser
