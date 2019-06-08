@@ -8,18 +8,18 @@
                         <thead>
                             <tr>
                                 <th>Asset</th>
-                                <th>Amount</th>
+                                <th>Address</th>
+                                <th>Balance</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <% for (var account of accounts) { %>
                             <tr>
-                                <td>USDT</td>
-                                <td>23324</td>
+                                <td><%= account.asset %></td>
+                                <td><%= account.address %></td>
+                                <td><%= account.balance %></td>
                             </tr>
-                            <tr>
-                                <td>X</td>
-                                <td>3333</td>
-                            </tr>
+                            <% } %>
                         </tbody>
                     </table>
                 </div>

@@ -5,7 +5,7 @@ const hdkey = require("hdkey"),
     { ec: EllipticCurve } = require("elliptic"),
     seed = "unable ordinary method rally neck knee trigger vote coffee guard pride child", // address TE7xK4ScGet7qvUw5CR4fEnRnpPMWzqFnq
     tronHdkey = hdkey.fromMasterSeed(seed),
-    ADDRESS_PREFIX = process.env.NET === "testnet" ? "a0" : "41";
+    ADDRESS_PREFIX = "41";
 
 module.exports = {
     generateAddress

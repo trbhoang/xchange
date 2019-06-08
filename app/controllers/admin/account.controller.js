@@ -17,6 +17,4 @@ async function showAccounts(req, res) {
     } catch (e) {
         res.status(400).send("Not found!");
     }
-
-    // res.render("admin_pages/users", { layout: "admin_layout" });
 }

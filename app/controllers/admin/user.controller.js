@@ -44,9 +44,9 @@ async function createUser(req, res) {
 
         // create new accounts for this user
         const path = "m/0";
-        const tronAaccount = await Account.create({
+        const tronAccount = await Account.create({
             user: user,
-            asset: "TRX",
+            asset: "XCOIN",
             address: generateAddress(path), // HD address
             path: path
         });

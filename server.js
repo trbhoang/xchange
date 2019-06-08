@@ -52,6 +52,7 @@ app.use(expressValidator());
 app.use(function(req, res, next) {
     req.isAuthenticated = req.session && req.session.user ? true : false;
     res.locals.currentUser = req.session.user;
+    req.currentUser = req.session.user;
     next();
 });
 

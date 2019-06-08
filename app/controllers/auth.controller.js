@@ -21,16 +21,13 @@ async function processLogin(req, res) {
             req.flash("loginError", "Invalid username / password");
             res.redirect("/");
         } else {
-            req.session.user = { username: user.username, user_id: user.id };
-            // req.session.user_id = user.id;
+            req.session.user = { username: user.username, id: user.id };
             res.redirect("/profile");
         }
     } catch (err) {
         console.log(err);
         res.status(500).send(err);
     }
-
-    // res.render("pages/home");
 }
 
 function processLogout(req, res) {
