@@ -73,7 +73,7 @@ async function showUser(req, res) {
 //Update Single User Data
 async function updateUser(req, res) {
     try {
-        let user = User.findByIdAndUpdate(req.params.id, req.body);
+        await User.findByIdAndUpdate(req.params.id, req.body);
         res.redirect("back");
     } catch (e) {
         res.status(500).send(e);

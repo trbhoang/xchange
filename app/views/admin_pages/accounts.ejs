@@ -20,6 +20,8 @@
                                     <th>User</th>
                                     <th>Asset</th>
                                     <th>Address</th>
+                                    <th>Balance</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,6 +30,12 @@
                                     <td><%= account.user.username %></td>
                                     <td><%= account.asset %></td>
                                     <td><%= account.address %></td>
+                                    <td><%= account.balance %></td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-Account" onclick="accountAction('<%= account.id %>','edit')">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                                 <% } %>
                             </tbody>
@@ -44,3 +52,71 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-Account">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalTitle">Update Account</h4>
+            </div>
+            <div class="modal-body">
+                <!-- form start -->
+                <form class="form-horizontal" id="modalForm" action="/admin/account" method="POST">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+
+                            <div class="col-sm-10">
+                                <input type="hidden" id="_id" name="_id" />
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Address" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                        <button type="submit" id="modalSubmit" class="btn btn-info pull-right">Update</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+    function accountAction(id, action) {
+        var base_url = window.location.origin;
+        console.log("accountAction");
+        console.log(action);
+
+        if (action == "add") {
+            // $("#_id").val("");
+            // $("#email").val("");
+            // $("#password").val("");
+            // $("#modalTitle").html("Add New User");
+            // $("#modalSubmit").html("Add");
+            // $("#modalForm").attr("action", "/admin/users");
+        } else if (action == "edit") {
+            $.ajax({
+                type: "GET",
+                url: base_url + "/admin/account/" + id,
+                success: function(res) {
+                    console.log(res);
+                    $("#_id").val(res.data.account._id);
+                    $("#address").val(res.data.account.address);
+
+                    $("#modalTitle").html(res.data.modalTitle);
+                    $("#modalSubmit").html(res.data.modalSubmit);
+                    $("#modalForm").attr("action", "/admin/account/" + id);
+                }
+            });
+        }
+    }
+</script>

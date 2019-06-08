@@ -19,7 +19,6 @@ async function showProfile(req, res) {
         for (let i = 0; i < accounts.length; i++) {
             let account = accounts[i];
             account.balance = await getTokenBalanceFromAddress(account.address);
-            console.log(account);
         }
 
         res.render("pages/profile", {
