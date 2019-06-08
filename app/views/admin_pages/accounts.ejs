@@ -20,6 +20,7 @@
                                     <th>User</th>
                                     <th>Asset</th>
                                     <th>Address</th>
+                                    <th>Path</th>
                                     <th>Balance</th>
                                     <th>Action</th>
                                 </tr>
@@ -30,6 +31,7 @@
                                     <td><%= account.user.username %></td>
                                     <td><%= account.asset %></td>
                                     <td><%= account.address %></td>
+                                    <td><%= account.path %></td>
                                     <td><%= account.balance %></td>
                                     <td>
                                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-Account" onclick="accountAction('<%= account.id %>','edit')">

@@ -31,6 +31,6 @@ async function getTokenBalanceFromAddress(address) {
         return 0;
     } catch (e) {
         console.log(e);
-        return 0;
+        return e.toString();
     }
 }
