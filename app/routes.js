@@ -4,7 +4,9 @@ const express = require("express"),
     { requiresLogin } = require("./middlewares"),
     mainController = require("./controllers/main.controller"),
     authController = require("./controllers/auth.controller"),
-    adminController = require("./controllers/admin.controller");
+    adminHomeController = require("./controllers/admin/home.controller"),
+    adminUserController = require("./controllers/admin/user.controller"),
+    adminAccountController = require("./controllers/admin/account.controller");
 
 // eventsController = require("./controllers/events.controller");
 
@@ -21,11 +23,13 @@ router.post("/login", authController.processLogin);
 router.get("/logout", authController.processLogout);
 
 // admin routes
-router.get("/admin", adminController.showHome);
-router.get("/admin/users", adminController.showUsers);
-router.post("/admin/users", adminController.createUser);
-router.get("/admin/user/:id", adminController.showUser);
-router.post("/admin/user/:id", adminController.updateUser);
+router.get("/admin", adminHomeController.showHome);
+router.get("/admin/users", adminUserController.showUsers);
+router.post("/admin/users", adminUserController.createUser);
+router.get("/admin/user/:id", adminUserController.showUser);
+router.post("/admin/user/:id", adminUserController.updateUser);
+
+router.get("/admin/accounts", adminAccountController.showAccounts);
 
 // event routes
 // router.get("/events", eventsController.showEvents);
