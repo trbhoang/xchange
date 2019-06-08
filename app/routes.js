@@ -4,6 +4,7 @@ const express = require("express"),
     { requiresLogin } = require("./middlewares"),
     mainController = require("./controllers/main.controller"),
     authController = require("./controllers/auth.controller"),
+    potController = require("./controllers/pot.controller"),
     adminHomeController = require("./controllers/admin/home.controller"),
     adminUserController = require("./controllers/admin/user.controller"),
     adminAccountController = require("./controllers/admin/account.controller");
@@ -15,6 +16,9 @@ module.exports = router;
 // main routes
 router.get("/", mainController.showHome);
 router.get("/profile", requiresLogin, mainController.showProfile);
+router.get("/pots", requiresLogin, potController.showPots);
+router.get("/pots/new", requiresLogin, potController.newPot);
+router.post("/pots/create", requiresLogin, potController.createPot);
 
 // auth routes
 router.post("/login", authController.processLogin);
