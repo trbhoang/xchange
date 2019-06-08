@@ -28,8 +28,8 @@ router.get("/admin/user/:id", adminUserController.showUser);
 router.post("/admin/user/:id", adminUserController.updateUser);
 
 router.get("/admin/accounts", adminAccountController.showAccounts);
-router.get("/admin/account/:id", adminAccountController.showAccount);
-router.post("/admin/account/:id", adminAccountController.updateAccount);
+// router.get("/admin/account/:id", adminAccountController.showAccount);
+// router.post("/admin/account/:id", adminAccountController.updateAccount);
 
 // event routes
 // router.get("/events", eventsController.showEvents);

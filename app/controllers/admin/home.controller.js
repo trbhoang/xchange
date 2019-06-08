@@ -1,7 +1,3 @@
-const User = require("../../models/user"),
-    Account = require("../../models/account"),
-    { generateAddress } = require("../../services/tron.service");
-
 module.exports = {
     showHome
 };

@@ -22,9 +22,11 @@ module.exports = {
 async function getTokenBalanceFromAddress(address) {
     try {
         const account = await tronWeb.trx.getAccount(address);
-        for (let i = 0; i < account.assetV2.length; i++) {
-            if (account.assetV2[i].key === TOKEN_ID) {
-                return account.assetV2[i].value / TOKEN_PRECISION_NUM;
+        if (account && account.assetV2) {
+            for (let i = 0; i < account.assetV2.length; i++) {
+                if (account.assetV2[i].key === TOKEN_ID) {
+                    return account.assetV2[i].value / TOKEN_PRECISION_NUM;
+                }
             }
         }
 

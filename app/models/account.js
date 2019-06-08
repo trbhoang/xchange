@@ -1,5 +1,6 @@
 const mongoose = require("mongoose"),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    TOKEN_NAME = process.env.TOKEN_NAME;
 
 const AccountSchema = new Schema(
     {
@@ -10,7 +11,7 @@ const AccountSchema = new Schema(
         },
         asset: {
             type: String,
-            required: true
+            default: TOKEN_NAME
         },
         address: {
             type: String,

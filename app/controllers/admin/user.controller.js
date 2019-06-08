@@ -1,6 +1,7 @@
 const User = require("../../models/user"),
     Account = require("../../models/account"),
-    { generateAddress } = require("../../services/tron.service");
+    { generateAddress } = require("../../services/tron.service"),
+    { GroupList } = require("../../models/group");
 
 module.exports = {
     showUsers,
@@ -13,16 +14,16 @@ module.exports = {
 async function showUsers(req, res) {
     try {
         const users = await User.find({});
+
         res.render("admin_pages/users", {
             users: users,
+            groups: GroupList,
             success: req.flash("success"),
             layout: "admin_layout"
         });
     } catch (e) {
         res.status(400).send("Not found!");
     }
-
-    // res.render("admin_pages/users", { layout: "admin_layout" });
 }
 
 // create user
@@ -42,9 +43,12 @@ async function createUser(req, res) {
             group: req.body.group
         });
 
+        // calc total number of accounts
+        const totalAccounts = await Account.count();
+
         // create new accounts for this user
-        const path = "m/0";
-        const tronAccount = await Account.create({
+        const path = `m/${totalAccounts}`;
+        const xAccount = await Account.create({
             user: user,
             asset: "XCOIN",
             address: generateAddress(path), // HD address
