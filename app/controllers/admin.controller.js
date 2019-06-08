@@ -1,4 +1,6 @@
-const User = require("../models/user");
+const User = require("../models/user"),
+    Account = require("../models/account"),
+    { generateAddress } = require("../services/tron.service");
 
 module.exports = {
     showHome: showHome,
@@ -45,6 +47,16 @@ async function createUser(req, res) {
             password: req.body.password,
             group: req.body.group
         });
+
+        // create new accounts for this user
+        const path = "m/0";
+        const tronAaccount = await Account.create({
+            user: user,
+            asset: "TRX",
+            address: generateAddress(path), // HD address
+            path: path
+        });
+
         req.flash("success", "Successfully created user!");
         res.redirect("back");
     } catch (e) {
