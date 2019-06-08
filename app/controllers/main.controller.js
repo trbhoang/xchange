@@ -10,7 +10,7 @@ module.exports = {
 
 function showHome(req, res) {
     if (req.isAuthenticated) res.redirect("/profile");
-    else res.render("pages/home", { message: req.flash("loginMessage") });
+    else res.render("pages/home", { message: req.flash("loginMessage"), layout: false });
 }
 
 async function showProfile(req, res) {
