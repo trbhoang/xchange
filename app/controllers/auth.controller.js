@@ -21,8 +21,9 @@ async function processLogin(req, res) {
             req.flash("loginError", "Invalid username / password");
             res.redirect("/");
         } else {
-            req.session.user = { username: user.username, id: user.id };
-            res.redirect("/profile");
+            req.session.user = { id: user.id, username: user.username, group: user.group };
+            if (user.isAdmin) res.redirect("/admin");
+            else res.redirect("/profile");
         }
     } catch (err) {
         console.log(err);

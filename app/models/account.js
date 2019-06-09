@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"),
+const mongoose = require("../db"),
     Schema = mongoose.Schema,
     TOKEN_NAME = process.env.TOKEN_NAME;
 

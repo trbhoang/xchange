@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const mongoose = require("../db"),
+    bcrypt = require("bcryptjs"),
+    { USERGROUP_ADMIN } = require("./group");
 
 const UserSchema = new mongoose.Schema(
     {
@@ -45,6 +46,10 @@ UserSchema.pre("save", function(next) {
 
 UserSchema.method("comparePassword", function(password) {
     return bcrypt.compare(password, this.password);
+});
+
+UserSchema.virtual("isAdmin").get(function() {
+    return this.group === USERGROUP_ADMIN;
 });
 
 const User = mongoose.model("User", UserSchema);

@@ -1,12 +1,9 @@
-// load environment variables
-require("dotenv").config();
-
 // Required System Module Files
-const express = require("express"),
+const config = require("./app/config"),
+    mongoose = require("./app/db"),
+    express = require("express"),
     app = express(),
-    port = process.env.PORT || 3000,
     expressLayouts = require("express-ejs-layouts"),
-    mongoose = require("mongoose"),
     bodyParser = require("body-parser"),
     session = require("express-session"),
     cookieParser = require("cookie-parser"),
@@ -15,12 +12,13 @@ const express = require("express"),
     connectMongoDBSession = require("connect-mongodb-session"),
     SessionStore = connectMongoDBSession(session),
     sessionStore = new SessionStore({
-        uri: process.env.DB_URI,
+        uri: config.db.uri,
         collection: "sessions"
-    });
+    }),
+    { requiresAdmin } = require("./app/middlewares");
 
 // connect to database
-mongoose.connect(process.env.DB_URI);
+// mongoose.connect(config.db.uri);
 
 // configure our application ===================
 // set sessions and cookie parser
@@ -56,10 +54,13 @@ app.use(function(req, res, next) {
     next();
 });
 
+// requires Admin for /admin
+app.use("/admin", requiresAdmin);
+
 // set the routes =============================
 app.use(require("./app/routes"));
 
 // start our server ===========================
-app.listen(port, () => {
-    console.log(`App listening on http://localhost:${port}`);
+app.listen(config.app.port, () => {
+    console.log(`App listening on http://localhost:${config.app.port}`);
 });

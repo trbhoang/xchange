@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"),
+const mongoose = require("../db"),
     Schema = mongoose.Schema;
 
 // Proof of Transaction model
