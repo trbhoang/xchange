@@ -43,6 +43,11 @@ app.set("views", "./app/views");
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 
+// helpers for views
+app.locals.toAddrExplorerURL = function(address) {
+    return config.token.explorer_url + `/#/address/${address}`;
+};
+
 // use body parser to grab info from a form
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());

@@ -28,7 +28,7 @@
                                 <% for (var account of accounts) { %>
                                 <tr>
                                     <td><%= account.user.username %></td>
-                                    <td><%= account.address %></td>
+                                    <td><a target="_blank" href="<%= toAddrExplorerURL(account.address) %>"><%= account.address %></a></td>
                                     <td><%= account.path %></td>
                                     <td><%= account.balance %></td>
                                     <!-- <td>

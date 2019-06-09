@@ -7,6 +7,9 @@ const config = {
     },
     db: {
         uri: process.env.DB_URI
+    },
+    token: {
+        explorer_url: process.env.TOKEN_EXPLORER_URL
     }
 };
 
