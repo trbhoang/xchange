@@ -1,0 +1,58 @@
+<section class="section">
+    <div class="container">
+        <div class="columns is-mobile is-centered">
+            <div class="column is-two-thirds">
+                <div class="content">
+                    <h1>Mã giao dịch: #665834T92008583</h1>
+                </div>
+
+                <article class="message">
+                    <div class="message-header">
+                        <p>Thông tin thanh toán</p>
+                    </div>
+                    <div class="message-body">
+                        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                            <tbody>
+                                <tr>
+                                    <td>Số tiền nạp (USDT):</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td>Địa chỉ gửi tiền:</td>
+                                    <td>1EcKUqNtf8qAfuHVjkiCPJ5nLs4UVgzVwB</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+                <button class="button is-primary modal-button" data-target="modal" aria-haspopup="true">Gửi bằng chứng thanh toán</button>
+                <!-- <a href="" class="button is-primary">Gửi bằng chứng thanh toán</a> -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1 class="title">Gửi bằng chứng thanh toán</h1>
+            <form action="/login" method="POST">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" name="amount" placeholder="Mã giao dịch (tx hash)" value="" />
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <!-- <button class="button is-primary">
+							Mua
+						</button> -->
+                        <a href="/transactions/665834T92008583" class="button is-primary">Gửi</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>

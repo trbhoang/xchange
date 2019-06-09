@@ -3,9 +3,8 @@ const Account = require("../models/account"),
     { getTokenBalanceFromAddress } = require("../services/tronweb.service");
 
 module.exports = {
-    // show the home page
-    showHome: showHome,
-    showProfile: showProfile
+    showHome,
+    showProfile
 };
 
 function showHome(req, res) {

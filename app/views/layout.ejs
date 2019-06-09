@@ -8,6 +8,10 @@
         <!-- css -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" />
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+        <script src="https://bulma.io/vendor/clipboard-1.7.1.min.js"></script>
+        <script src="https://bulma.io/vendor/js.cookie-2.1.4.min.js"></script>
+        <script src="https://bulma.io/lib/main.js?v=201905280941"></script>
     </head>
     <body>
         <!-- header -->
@@ -30,21 +34,25 @@
                         <div class="navbar-end">
                             <% if (currentUser) { %>
                             <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link" href="https://bulma.io/more">
+                                <a class="navbar-link" href="/profile">
                                     <%= currentUser.username %>
                                 </a>
                                 <div id="moreDropdown" class="navbar-dropdown">
                                     <a class="navbar-item" href="/profile">
                                         <span class="icon"> <i class="fas fa-wallet"></i></span>
-                                        &nbsp; Balance
+                                        &nbsp; Số dư
                                     </a>
-                                    <a class="navbar-item" href="/pots">
+                                    <a class="navbar-item" href="/coin">
                                         <span class="icon"> <i class="fas fa-file-contract"></i></span>
-                                        &nbsp; Proof of Transaction
+                                        &nbsp; Mua bán XCoin
+                                    </a>
+                                    <a class="navbar-item" href="/transactions">
+                                        <span class="icon"> <i class="fas fa-file-contract"></i></span>
+                                        &nbsp; Lịch sử giao dịch
                                     </a>
                                     <a class="navbar-item" href="/logout">
                                         <span class="icon"> <i class="fas fa-sign-out-alt"></i></span>
-                                        &nbsp; Logout
+                                        &nbsp; Đăng xuất
                                     </a>
                                 </div>
                             </div>
