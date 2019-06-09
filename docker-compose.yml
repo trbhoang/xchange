@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+    nginx:
+        image: nginx:1.16.0-alpine
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+            # - ./data/certbot/conf:/etc/letsencrypt
+            # - ./data/certbot/www:/var/www/certbot
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - xchange
+    xchange:
+        build:
+            context: .
+        env_file:
+            - .env
+        container_name: xchange
+        restart: always
+        expose:
+            - 80
