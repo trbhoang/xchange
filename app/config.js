@@ -9,7 +9,12 @@ const config = {
         uri: process.env.DB_URI
     },
     token: {
-        explorer_url: process.env.TOKEN_EXPLORER_URL
+        tokenName: process.env.TOKEN_NAME,
+        tokenId: process.env.TOKEN_ID,
+        smPk: process.env.TOKEN_SM_PK,
+        smAddress: process.env.TOKEN_SM_ADDRESS,
+        fullNodeAPI: process.env.TOKEN_FULLNODE_API,
+        explorerUrl: process.env.TOKEN_EXPLORER_URL
     }
 };
 

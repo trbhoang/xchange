@@ -1,13 +1,12 @@
-const TronWeb = require("tronweb"),
+const config = require("../config"),
+    TronWeb = require("tronweb"),
     smPrivateKey = "99ced7bdaf2172ac5177f0381f273e4e0006e3dc30deb74f0071220122c8348e",
     smAddress = "TE7xK4ScGet7qvUw5CR4fEnRnpPMWzqFnq",
-    TOKEN_ID = "1000353",
-    TOKEN_NAME = "XXXCOIN",
-    TOKEN_ABBR = "abbr",
+    TOKEN_ID = config.token.tokenId,
     TOKEN_PRECISION_NUM = 100000,
     tronWeb = new TronWeb(
         {
-            fullHost: "https://api.shasta.trongrid.io" //'https://api.trongrid.io'
+            fullHost: config.token.fullNodeAPI
         },
         smPrivateKey
     );
