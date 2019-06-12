@@ -1,23 +1,23 @@
-const { Address, HDPublicKey, Networks } = require("bitcore-lib");
-const mongoose = require("mongoose");
+// const { Address, HDPublicKey, Networks } = require("bitcore-lib");
+// const mongoose = require("mongoose");
 
-const tronWeb = require("../lib/tron.web");
-const AddressModel = require("../models/address.model");
-const FundingModel = require("../models/funding.model");
-const BlockModel = require("../models/block.model");
+// const tronWeb = require("../lib/tron.web");
+// const AddressModel = require("../models/address.model");
+// const FundingModel = require("../models/funding.model");
+// const BlockModel = require("../models/block.model");
 
-const TinyQueue = require("tinyqueue");
-let nextBlocks = new TinyQueue([], (a, b) => a.height - b.height);
+// const TinyQueue = require("tinyqueue");
+// let nextBlocks = new TinyQueue([], (a, b) => a.height - b.height);
 
-const xpub = "xpub661MyMwAqRbcH1ofWrryhxE8c1qdSacpCsrojJyNbzHTk2Y834a3ifXmR9XQB6UoPnhTyWVa5hxc43erWdpgAeYaN8XB668csRatUycZ2Cn";
-const usdtHdkey = new HDPublicKey(xpub);
+// const xpub = "xpub661MyMwAqRbcH1ofWrryhxE8c1qdSacpCsrojJyNbzHTk2Y834a3ifXmR9XQB6UoPnhTyWVa5hxc43erWdpgAeYaN8XB668csRatUycZ2Cn";
+// const usdtHdkey = new HDPublicKey(xpub);
 
 const jayson = require("jayson");
 const Promise = require("bluebird");
 
 client = Promise.promisifyAll(jayson.client.http("http://admin:secret@95.216.227.168:8332"));
 
-const USDT_FUNDING_ADDRESS = "1DyxRL1J5YoPGbyd1jco7AYh7zLj38Zymi";
+const USDT_FUNDING_ADDRESS = "1JcN6bBhr2AeNDQKSHTAKXGgupLRkwBB7R"; // "1DyxRL1J5YoPGbyd1jco7AYh7zLj38Zymi";
 const XTOKEN_ID = "1000353";
 
 async function getTxsByHeight(height) {
@@ -46,187 +46,200 @@ function parseRawTransaction(transaction) {
 }
 
 async function getTransactionById(id) {
-    transaction = await getRawTx(id);
-    if (transaction) {
-        transaction = parseRawTransaction(transaction);
+    try {
+        transaction = await getRawTx(id);
+        if (transaction) {
+            transaction = parseRawTransaction(transaction);
+        }
+        return transaction;
+    } catch (err) {
+        throw new Error(err);
     }
-    return transaction;
 }
 
-function checkTransaction(transaction) {
-    if (transaction) {
-        return transaction.valid && transaction.amount > 0 && transaction.confirmations > 0 && transaction.toAddress == USDT_FUNDING_ADDRESS;
-    }
+function isValidTransaction(transaction) {
+    if (transaction) return transaction.valid && transaction.amount > 0 && transaction.confirmations > 0 && transaction.toAddress == USDT_FUNDING_ADDRESS;
+
     return false;
 }
 
-async function transferXToken(user, amount) {
+async function getAndVerifyTransaction(txId) {
     try {
-        address = await AddressModel.findOne({ user: user, currency: "TRX" });
-        console.log("transferXToken", address.hash, amount * 10 ** 5);
-        if (address && amount > 0) {
-            await tronWeb.trx.sendToken(address.hash, amount * 10 ** 5, XTOKEN_ID);
-        }
+        const tx = await getTransactionById(txid);
+        return isValidTransaction(tx);
     } catch (err) {
-        throw err;
+        throw new Error(err);
     }
 }
 
-async function processFunding(user, tranId) {
-    const session = await mongoose.startSession();
-    try {
-        if (!session) throw Error("Can not start session");
-        session.startTransaction();
-        transaction = await getTransactionById(tranId);
-        isSucessed = checkTransaction(transaction);
-        await FundingModel.create([{ ...transaction, isSucessed: isSucessed }], { session: session });
-        if (isSucessed) {
-            await transferXToken(user, transaction.amount);
-        }
-        await session.commitTransaction();
-        session.endSession();
-    } catch (err) {
-        await session.abortTransaction();
-        session.endSession();
-        throw err;
-    }
-}
+// async function transferXToken(user, amount) {
+//     try {
+//         address = await AddressModel.findOne({ user: user, currency: "TRX" });
+//         console.log("transferXToken", address.hash, amount * 10 ** 5);
+//         if (address && amount > 0) {
+//             await tronWeb.trx.sendToken(address.hash, amount * 10 ** 5, XTOKEN_ID);
+//         }
+//     } catch (err) {
+//         throw err;
+//     }
+// }
 
-async function getLatestBlockHeight() {
-    return (await client.requestAsync("omni_getinfo", [])).result.block;
-}
+// async function processFunding(user, tranId) {
+//     const session = await mongoose.startSession();
+//     try {
+//         if (!session) throw Error("Can not start session");
+//         session.startTransaction();
+//         transaction = await getTransactionById(tranId);
+//         isSucessed = checkTransaction(transaction);
+//         await FundingModel.create([{ ...transaction, isSucessed: isSucessed }], { session: session });
+//         if (isSucessed) {
+//             await transferXToken(user, transaction.amount);
+//         }
+//         await session.commitTransaction();
+//         session.endSession();
+//     } catch (err) {
+//         await session.abortTransaction();
+//         session.endSession();
+//         throw err;
+//     }
+// }
 
-function createAddress(path) {
-    const address = new Address(usdtHdkey.derive(path).publicKey, Networks.mainnet).toString();
-    AddressModel.create(
-        {
-            hash: address,
-            path: path,
-            currency: "USDT"
-        },
-        function(err, address) {
-            if (err) console.log(err);
-            console.log("saved", address);
-        }
-    );
-    return address;
-}
+// async function getLatestBlockHeight() {
+//     return (await client.requestAsync("omni_getinfo", [])).result.block;
+// }
 
-async function monitorNetwork() {
-    latestProcessedBlock = await BlockModel.findOne({ currency: "USDT" });
-    const latestHeight = await getLatestBlockHeight();
+// function createAddress(path) {
+//     const address = new Address(usdtHdkey.derive(path).publicKey, Networks.mainnet).toString();
+//     AddressModel.create(
+//         {
+//             hash: address,
+//             path: path,
+//             currency: "USDT"
+//         },
+//         function(err, address) {
+//             if (err) console.log(err);
+//             console.log("saved", address);
+//         }
+//     );
+//     return address;
+// }
 
-    const currentHeight = latestProcessedBlock ? latestProcessedBlock.height : latestHeight - 10;
+// async function monitorNetwork() {
+//     latestProcessedBlock = await BlockModel.findOne({ currency: "USDT" });
+//     const latestHeight = await getLatestBlockHeight();
 
-    console.log("latestHeight", latestHeight);
-    const confirmedHeight = latestHeight - 2;
-    console.log("currentHeight", currentHeight);
+//     const currentHeight = latestProcessedBlock ? latestProcessedBlock.height : latestHeight - 10;
 
-    if (currentHeight < confirmedHeight) {
-        // Fetch and process at the same time
-        await Promise.all([fetchRange(currentHeight + 1, confirmedHeight), processRange(currentHeight + 1, confirmedHeight)]);
-    } else {
-        // Reach confirmed height, nothing to do
-        await Promise.delay(1000 * 10);
-    }
-}
+//     console.log("latestHeight", latestHeight);
+//     const confirmedHeight = latestHeight - 2;
+//     console.log("currentHeight", currentHeight);
 
-async function fetchRange(fromHeight, toHeight) {
-    if (fromHeight > toHeight) return;
-    const heights = rangeToArray(fromHeight, toHeight);
-    await Promise.each(
-        heights,
-        async height => {
-            // if (!isRunning) return;
-            // if (height != 579531) return
-            const txs = await getTxsByHeight(height);
-            console.log("fetchRange have number transaction", txs.length);
-            const transactions = [];
-            // const txsTemp = [txs[0]]
+//     if (currentHeight < confirmedHeight) {
+//         // Fetch and process at the same time
+//         await Promise.all([fetchRange(currentHeight + 1, confirmedHeight), processRange(currentHeight + 1, confirmedHeight)]);
+//     } else {
+//         // Reach confirmed height, nothing to do
+//         await Promise.delay(1000 * 10);
+//     }
+// }
 
-            await Promise.each(txs, async tx => {
-                let transactionRaw = null;
-                try {
-                    transactionRaw = await getRawTx(tx);
-                    const parsedTx = await parseTransaction(transactionRaw);
-                    if (parsedTx.valid) transactions.push(parsedTx);
-                } catch (error) {
-                    console.log(error);
-                    transactionRaw = null;
-                }
-            }).catch(err => console.log(err));
-            if (transactions.length > 0) {
-                const nextBlock = { hash: transactions[0].blockHash, height, transactions };
-                nextBlocks.push(nextBlock);
-            }
-        },
-        { concurrency: 5 }
-    );
-}
+// async function fetchRange(fromHeight, toHeight) {
+//     if (fromHeight > toHeight) return;
+//     const heights = rangeToArray(fromHeight, toHeight);
+//     await Promise.each(
+//         heights,
+//         async height => {
+//             // if (!isRunning) return;
+//             // if (height != 579531) return
+//             const txs = await getTxsByHeight(height);
+//             console.log("fetchRange have number transaction", txs.length);
+//             const transactions = [];
+//             // const txsTemp = [txs[0]]
 
-function rangeToArray(startAt, to) {
-    const size = to - startAt + 1; // include startAt and to
-    return [...Array(size).keys()].map(i => i + startAt);
-}
+//             await Promise.each(txs, async tx => {
+//                 let transactionRaw = null;
+//                 try {
+//                     transactionRaw = await getRawTx(tx);
+//                     const parsedTx = await parseTransaction(transactionRaw);
+//                     if (parsedTx.valid) transactions.push(parsedTx);
+//                 } catch (error) {
+//                     console.log(error);
+//                     transactionRaw = null;
+//                 }
+//             }).catch(err => console.log(err));
+//             if (transactions.length > 0) {
+//                 const nextBlock = { hash: transactions[0].blockHash, height, transactions };
+//                 nextBlocks.push(nextBlock);
+//             }
+//         },
+//         { concurrency: 5 }
+//     );
+// }
 
-async function shouldProcessNextBlock(fromHeight, toHeight) {
-    // Pre-validate
-    if (fromHeight > toHeight) return false;
+// function rangeToArray(startAt, to) {
+//     const size = to - startAt + 1; // include startAt and to
+//     return [...Array(size).keys()].map(i => i + startAt);
+// }
 
-    // Validate next block
-    const nextBlock = nextBlocks.peek();
-    if (validateBlock(nextBlock, fromHeight, toHeight)) return true;
-    await Promise.delay(1000 * 10);
-    return shouldProcessNextBlock(fromHeight, toHeight);
-}
+// async function shouldProcessNextBlock(fromHeight, toHeight) {
+//     // Pre-validate
+//     if (fromHeight > toHeight) return false;
 
-async function processRange(fromHeight, toHeight) {
-    if (await shouldProcessNextBlock(fromHeight, toHeight)) {
-        const nextBlock = nextBlocks.pop();
-        await processBlock(nextBlock);
-        await processRange(nextBlock.height + 1, toHeight);
-    }
-}
+//     // Validate next block
+//     const nextBlock = nextBlocks.peek();
+//     if (validateBlock(nextBlock, fromHeight, toHeight)) return true;
+//     await Promise.delay(1000 * 10);
+//     return shouldProcessNextBlock(fromHeight, toHeight);
+// }
 
-async function processBlock({ height, transactions }) {
-    //isRunning = true;
-    try {
-        console.log(`Process block ${height}`);
-        const fundings = await buildFundings(transactions);
-        console.log("have ", fundings.length, "fundings");
-        // TODO: transfer coin X
-        if (fundings.length > 0) {
-            console.log("transfer coin X");
-        }
-        await Promise.each(fundings, tx => buildFundings(tx));
-        await BlockModel.findOneAndUpdate({ currency: "USDT" }, { height: height }, { upsert: true, useFindAndModify: true });
-    } catch (e) {
-        console.log(e);
-    }
-}
+// async function processRange(fromHeight, toHeight) {
+//     if (await shouldProcessNextBlock(fromHeight, toHeight)) {
+//         const nextBlock = nextBlocks.pop();
+//         await processBlock(nextBlock);
+//         await processRange(nextBlock.height + 1, toHeight);
+//     }
+// }
 
-async function buildFundings(transactions) {
-    // Our filters
-    const isFunding = transaction => transaction.toAddress;
-    const addFundingAttributes = tx => ({
-        ...tx,
-        toAddress: tx.toAddress.id
-    });
+// async function processBlock({ height, transactions }) {
+//     //isRunning = true;
+//     try {
+//         console.log(`Process block ${height}`);
+//         const fundings = await buildFundings(transactions);
+//         console.log("have ", fundings.length, "fundings");
+//         // TODO: transfer coin X
+//         if (fundings.length > 0) {
+//             console.log("transfer coin X");
+//         }
+//         await Promise.each(fundings, tx => buildFundings(tx));
+//         await BlockModel.findOneAndUpdate({ currency: "USDT" }, { height: height }, { upsert: true, useFindAndModify: true });
+//     } catch (e) {
+//         console.log(e);
+//     }
+// }
 
-    const fundingTransaction = await Promise.filter(
-        transactions,
-        async tx => {
-            console.log(tx);
-            return isFunding(tx);
-        },
-        { concurrency: 1 }
-    );
+// async function buildFundings(transactions) {
+//     // Our filters
+//     const isFunding = transaction => transaction.toAddress;
+//     const addFundingAttributes = tx => ({
+//         ...tx,
+//         toAddress: tx.toAddress.id
+//     });
 
-    return fundingTransaction.map(addFundingAttributes);
-}
+//     const fundingTransaction = await Promise.filter(
+//         transactions,
+//         async tx => {
+//             console.log(tx);
+//             return isFunding(tx);
+//         },
+//         { concurrency: 1 }
+//     );
 
-function validateBlock(block, fromHeight, toHeight) {
-    return block && (block.height >= fromHeight && block.height <= toHeight);
-}
+//     return fundingTransaction.map(addFundingAttributes);
+// }
 
-module.exports = { processFunding };
+// function validateBlock(block, fromHeight, toHeight) {
+//     return block && (block.height >= fromHeight && block.height <= toHeight);
+// }
+
+// module.exports = { processFunding, getTransactionById };
+module.exports = { getAndVerifyTransaction };
