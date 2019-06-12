@@ -1,8 +1,9 @@
-const { transferToken } = require("../services/transfer.service"),
-    { getTransactionById, isValidTransaction, isValidAndConfirmedTransaction } = require("../services/usdt.service"),
+const { getTransactionById, isValidTransaction, isValidAndConfirmedTransaction } = require("../services/usdt.service"),
     { TRADE_STATUS_PAYMENT_CONFIRMED, TRADE_STATUS_PAYMENT_UNCONFIRMED } = require("../models/trade"),
-    ObjectId = require("mongoose").Types.ObjectId,
-    { Trade } = require("../models/trade");
+    { Trade } = require("../models/trade"),
+    { User } = require("../models/user"),
+    { Order } = require("../models/order"),
+    { Account } = require("../models/account");
 
 module.exports = {
     showDetail,
@@ -32,10 +33,15 @@ async function createTrade(req, res) {
         }
 
         const status = isValidAndConfirmedTransaction(tx) ? TRADE_STATUS_PAYMENT_CONFIRMED : TRADE_STATUS_PAYMENT_UNCONFIRMED;
+        const order = await Order.findById(req.body._orderId);
+        const user = await User.findById(req.currentUser.id);
+        const account = await Account.findOne({ user: user.id });
         const trade = await Trade.create({
-            order: ObjectId(req.body._orderId),
-            user: ObjectId(req.currentUser.id),
+            order: order.id,
+            user: user.id,
             payment_txid: txId,
+            token_address: account.address,
+            amount: order.amount,
             status: status
         });
 

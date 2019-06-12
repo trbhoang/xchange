@@ -1,6 +1,4 @@
-const { transferToken } = require("../services/transfer.service"),
-    { getTransactionById, isValidTransaction, isValidAndConfirmedTransaction } = require("../services/usdt.service"),
-    { Order, ORDER_BUY } = require("../models/order"),
+const { Order, ORDER_BUY } = require("../models/order"),
     ObjectId = require("mongoose").Types.ObjectId;
 
 module.exports = {

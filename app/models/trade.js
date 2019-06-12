@@ -23,8 +23,14 @@ const TradeSchema = new Schema(
             required: true,
             unique: true
         },
-        token_transfer_txid: {
+        token_txid: {
             type: String
+        },
+        token_address: {
+            type: String
+        },
+        amount: {
+            type: Number
         },
         status: {
             type: String,

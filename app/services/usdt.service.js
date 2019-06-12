@@ -67,14 +67,14 @@ function isValidAndConfirmedTransaction(transaction) {
     return isValidTransaction(transaction) && transaction.confirmations > 0;
 }
 
-// async function getAndVerifyTransaction(txId) {
-//     try {
-//         const tx = await getTransactionById(txid);
-//         return isValidTransaction(tx);
-//     } catch (err) {
-//         throw new Error(err);
-//     }
-// }
+async function getAndVerifyTransaction(txId) {
+    try {
+        const tx = await getTransactionById(txId);
+        return isValidAndConfirmedTransaction(tx);
+    } catch (err) {
+        throw new Error(err);
+    }
+}
 
 // async function transferXToken(user, amount) {
 //     try {
@@ -246,4 +246,4 @@ function isValidAndConfirmedTransaction(transaction) {
 // }
 
 // module.exports = { processFunding, getTransactionById };
-module.exports = { getTransactionById, isValidTransaction, isValidAndConfirmedTransaction };
+module.exports = { getTransactionById, isValidTransaction, isValidAndConfirmedTransaction, getAndVerifyTransaction };

@@ -65,6 +65,31 @@ app.use("/admin", requiresAdmin);
 // set the routes =============================
 app.use(require("./app/routes"));
 
+// trades monitoring
+const registerSignals = () => {
+    process.on("SIGTERM", () => shutdown());
+    process.on("SIGINT", () => shutdown());
+};
+
+async function shutdown() {
+    process.exit(0);
+}
+
+const { monitorTrades } = require("./app/services/monitoring.service");
+
+async function run() {
+    while (true) {
+        await monitorTrades();
+    }
+}
+
+run()
+    .then(registerSignals)
+    .catch(err => {
+        console.log(err);
+        process.exit(1);
+    });
+
 // start our server ===========================
 app.listen(config.app.port, () => {
     console.log(`App listening on http://localhost:${config.app.port}`);

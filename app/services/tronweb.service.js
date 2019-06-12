@@ -1,7 +1,7 @@
 const config = require("../config"),
     TronWeb = require("tronweb"),
-    smPrivateKey = "99ced7bdaf2172ac5177f0381f273e4e0006e3dc30deb74f0071220122c8348e",
-    smAddress = "TE7xK4ScGet7qvUw5CR4fEnRnpPMWzqFnq",
+    smPrivateKey = config.token.smPk,
+    smAddress = config.token.smAddress,
     TOKEN_ID = config.token.tokenId,
     TOKEN_PRECISION_NUM = 100000,
     tronWeb = new TronWeb(
@@ -11,11 +11,9 @@ const config = require("../config"),
         smPrivateKey
     );
 
-//
-tronWeb.setAddress(smAddress);
-
 module.exports = {
-    getTokenBalanceFromAddress
+    getTokenBalanceFromAddress,
+    transferToken
 };
 
 async function getTokenBalanceFromAddress(address) {
@@ -33,5 +31,20 @@ async function getTokenBalanceFromAddress(address) {
     } catch (e) {
         console.log(e);
         return e.toString();
+    }
+}
+
+async function transferToken(toAddress, amount) {
+    try {
+        if (toAddress && amount > 0) {
+            console.log("transferXToken", toAddress, amount * 10 ** 5);
+            tronWeb.setAddress(smAddress);
+            tronWeb.setPrivateKey(smPrivateKey);
+            const res = await tronWeb.trx.sendToken(toAddress, amount * 10 ** 5, config.token.tokenId);
+            return res;
+        }
+        throw new Error("Invalid input");
+    } catch (err) {
+        throw err;
     }
 }
