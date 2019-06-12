@@ -1,5 +1,4 @@
-const User = require("../models/user"),
-    { USERGROUP_ADMIN } = require("../models/group");
+const { User, USERGROUP_ADMIN } = require("../models/user");
 
 // create admin user
 (async function() {

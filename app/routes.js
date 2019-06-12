@@ -6,7 +6,7 @@ const express = require("express"),
     authController = require("./controllers/auth.controller"),
     coinController = require("./controllers/coin.controller"),
     potController = require("./controllers/pot.controller"),
-    transactionController = require("./controllers/transaction.controller"),
+    tradeController = require("./controllers/trade.controller"),
     adminHomeController = require("./controllers/admin/home.controller"),
     adminUserController = require("./controllers/admin/user.controller"),
     adminAccountController = require("./controllers/admin/account.controller");
@@ -27,10 +27,10 @@ router.get("/coin", requiresLogin, coinController.showCoin);
 router.get("/coin/buy", requiresLogin, coinController.showBuy);
 
 // transactions
-router.get("/transactions", requiresLogin, transactionController.showHistory);
-router.get("/transactions/buy", requiresLogin, transactionController.showBuy);
+router.get("/trades", requiresLogin, tradeController.showHistory);
+router.get("/trades/buy", requiresLogin, tradeController.showBuy);
 // router.get("/transactions/sell", requiresLogin, transactionController.showSell);
-router.get("/transactions/:id", requiresLogin, transactionController.showDetail);
+router.get("/trades/:id", requiresLogin, tradeController.showDetail);
 
 // auth routes
 router.post("/login", authController.processLogin);

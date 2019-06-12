@@ -1,6 +1,7 @@
 const mongoose = require("../db"),
     Schema = mongoose.Schema,
-    TOKEN_NAME = process.env.TOKEN_NAME;
+    config = require("../config"),
+    TOKEN_NAME = config.token.tokenName;
 
 const AccountSchema = new Schema(
     {
@@ -30,4 +31,5 @@ const AccountSchema = new Schema(
 );
 
 // Export the model
-module.exports = mongoose.model("Account", AccountSchema);
+const Account = mongoose.model("Account", AccountSchema);
+module.exports = { Account };

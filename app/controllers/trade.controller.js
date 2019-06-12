@@ -5,13 +5,13 @@ module.exports = {
 };
 
 function showHistory(req, res) {
-    res.render("pages/transaction/transactions");
+    res.render("pages/trade/trades");
 }
 
 function showBuy(req, res) {
-    res.render("pages/transaction/buy");
+    res.render("pages/trade/buy");
 }
 
 function showDetail(req, res) {
-    res.render("pages/transaction/detail");
+    res.render("pages/trade/detail");
 }

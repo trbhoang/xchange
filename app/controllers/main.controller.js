@@ -1,4 +1,4 @@
-const Account = require("../models/account"),
+const { Account } = require("../models/account"),
     ObjectId = require("mongoose").Types.ObjectId,
     { getTokenBalanceFromAddress } = require("../services/tronweb.service");
 

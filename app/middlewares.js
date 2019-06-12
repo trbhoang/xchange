@@ -1,4 +1,4 @@
-const { USERGROUP_ADMIN } = require("./models/group");
+const { USERGROUP_ADMIN } = require("./models/user");
 
 module.exports = {
     requiresLogin,
