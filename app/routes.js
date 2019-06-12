@@ -17,7 +17,7 @@ module.exports = router;
 // define routes
 // main routes
 router.get("/", mainController.showHome);
-router.get("/profile", requiresLogin, mainController.showProfile);
+router.get("/balance", requiresLogin, mainController.showBalance);
 router.get("/pots", requiresLogin, potController.showPots);
 router.get("/pots/new", requiresLogin, potController.newPot);
 router.post("/pots/create", requiresLogin, potController.createPot);

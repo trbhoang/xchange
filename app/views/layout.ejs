@@ -34,11 +34,11 @@
                         <div class="navbar-end">
                             <% if (currentUser) { %>
                             <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link" href="/profile">
+                                <a class="navbar-link" href="/balance">
                                     <%= currentUser.username %>
                                 </a>
                                 <div id="moreDropdown" class="navbar-dropdown">
-                                    <a class="navbar-item" href="/profile">
+                                    <a class="navbar-item" href="/balance">
                                         <span class="icon"> <i class="fas fa-wallet"></i></span>
                                         &nbsp; Số dư
                                     </a>
@@ -46,7 +46,7 @@
                                         <span class="icon"> <i class="fas fa-file-contract"></i></span>
                                         &nbsp; Mua bán XCoin
                                     </a>
-                                    <a class="navbar-item" href="/transactions">
+                                    <a class="navbar-item" href="/trades">
                                         <span class="icon"> <i class="fas fa-file-contract"></i></span>
                                         &nbsp; Lịch sử giao dịch
                                     </a>

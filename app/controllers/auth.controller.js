@@ -23,7 +23,7 @@ async function processLogin(req, res) {
         } else {
             req.session.user = { id: user.id, username: user.username, group: user.group };
             if (user.isAdmin) res.redirect("/admin");
-            else res.redirect("/profile");
+            else res.redirect("/coin");
         }
     } catch (err) {
         console.log(err);

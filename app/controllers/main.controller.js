@@ -4,15 +4,15 @@ const { Account } = require("../models/account"),
 
 module.exports = {
     showHome,
-    showProfile
+    showBalance
 };
 
 function showHome(req, res) {
-    if (req.isAuthenticated) res.redirect("/profile");
+    if (req.isAuthenticated) res.redirect("/coin");
     else res.render("pages/home", { message: req.flash("loginMessage"), layout: false });
 }
 
-async function showProfile(req, res) {
+async function showBalance(req, res) {
     try {
         const accounts = await Account.find({ user: ObjectId(req.currentUser.id) });
         for (let i = 0; i < accounts.length; i++) {
@@ -20,7 +20,7 @@ async function showProfile(req, res) {
             account.balance = await getTokenBalanceFromAddress(account.address);
         }
 
-        res.render("pages/profile", {
+        res.render("pages/balance", {
             accounts
         });
     } catch (e) {
