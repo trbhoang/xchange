@@ -1,19 +1,19 @@
 const mongoose = require("../db"),
+    Schema = mongoose.Schema,
     TRADE_STATUS_NEW = "new",
     TRADE_STATUS_PAYMENT_UNCONFIRMED = "payment_unconfirmed",
     TRADE_STATUS_PAYMENT_CONFIRMED = "payment_confirmed",
     TRADE_STATUS_TOKEN_TRANSFER_ISSUED = "token_transfer_issue",
-    TRADE_STATUS_TOKEN_TRANSFER_SUCCESS = "token_transfer_success",
-    ORDER_TYPE_BUY = "buy",
-    ORDER_TYPE_SELL = "sell";
+    TRADE_STATUS_TOKEN_TRANSFER_SUCCESS = "token_transfer_success";
 
-const TradeSchema = new mongoose.Schema(
+const TradeSchema = new Schema(
     {
-        order_type: {
-            type: String,
+        order: {
+            type: Schema.Types.ObjectId,
+            ref: "Order",
             required: true
         },
-        trader: {
+        user: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true
@@ -24,8 +24,7 @@ const TradeSchema = new mongoose.Schema(
             unique: true
         },
         token_transfer_txid: {
-            type: String,
-            unique: true
+            type: String
         },
         status: {
             type: String,
@@ -40,4 +39,10 @@ const TradeSchema = new mongoose.Schema(
 
 const Trade = mongoose.model("Trade", TradeSchema);
 
-module.exports = { Trade };
+module.exports = {
+    Trade,
+    TRADE_STATUS_PAYMENT_UNCONFIRMED,
+    TRADE_STATUS_PAYMENT_CONFIRMED,
+    TRADE_STATUS_TOKEN_TRANSFER_ISSUED,
+    TRADE_STATUS_TOKEN_TRANSFER_SUCCESS
+};

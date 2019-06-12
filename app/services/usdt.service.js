@@ -58,19 +58,23 @@ async function getTransactionById(id) {
 }
 
 function isValidTransaction(transaction) {
-    if (transaction) return transaction.valid && transaction.amount > 0 && transaction.confirmations > 0 && transaction.toAddress == USDT_FUNDING_ADDRESS;
+    if (transaction) return transaction.valid && transaction.amount > 0 && transaction.toAddress == USDT_FUNDING_ADDRESS;
 
     return false;
 }
 
-async function getAndVerifyTransaction(txId) {
-    try {
-        const tx = await getTransactionById(txid);
-        return isValidTransaction(tx);
-    } catch (err) {
-        throw new Error(err);
-    }
+function isValidAndConfirmedTransaction(transaction) {
+    return isValidTransaction(transaction) && transaction.confirmations > 0;
 }
+
+// async function getAndVerifyTransaction(txId) {
+//     try {
+//         const tx = await getTransactionById(txid);
+//         return isValidTransaction(tx);
+//     } catch (err) {
+//         throw new Error(err);
+//     }
+// }
 
 // async function transferXToken(user, amount) {
 //     try {
@@ -242,4 +246,4 @@ async function getAndVerifyTransaction(txId) {
 // }
 
 // module.exports = { processFunding, getTransactionById };
-module.exports = { getAndVerifyTransaction };
+module.exports = { getTransactionById, isValidTransaction, isValidAndConfirmedTransaction };

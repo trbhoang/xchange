@@ -7,7 +7,7 @@
     <div class="container">
         <div class="columns is-mobile is-centered">
             <div class="column is-half">
-                <form action="/login" method="POST">
+                <form action="/orders/buy" method="POST">
                     <div class="field">
                         <div class="control">
                             <input class="input" type="text" name="amount" placeholder="Số lượng" value="" />
@@ -15,10 +15,9 @@
                     </div>
                     <div class="field">
                         <p class="control">
-                            <!-- <button class="button is-primary">
-                                Mua
-							</button> -->
-                            <a href="/trades/buy" class="button is-primary">Mua</a>
+							<div class="form-group">
+								<button class="button is-primary">Mua</button>
+							</div>
                         </p>
                     </div>
                 </form>

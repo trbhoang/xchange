@@ -5,7 +5,7 @@ const express = require("express"),
     mainController = require("./controllers/main.controller"),
     authController = require("./controllers/auth.controller"),
     coinController = require("./controllers/coin.controller"),
-    potController = require("./controllers/pot.controller"),
+    orderController = require("./controllers/order.controller"),
     tradeController = require("./controllers/trade.controller"),
     adminHomeController = require("./controllers/admin/home.controller"),
     adminUserController = require("./controllers/admin/user.controller"),
@@ -18,17 +18,19 @@ module.exports = router;
 // main routes
 router.get("/", mainController.showHome);
 router.get("/balance", requiresLogin, mainController.showBalance);
-router.get("/pots", requiresLogin, potController.showPots);
-router.get("/pots/new", requiresLogin, potController.newPot);
-router.post("/pots/create", requiresLogin, potController.createPot);
 
 // xchange rate
 router.get("/coin", requiresLogin, coinController.showCoin);
-router.get("/coin/buy", requiresLogin, coinController.showBuy);
+
+// orders
+router.get("/orders/buy", orderController.showBuy);
+router.post("/orders/buy", orderController.createOrder);
+router.get("/orders/payment/:id", orderController.showPayment);
 
 // transactions
 router.get("/trades", requiresLogin, tradeController.showHistory);
-router.get("/trades/buy", requiresLogin, tradeController.showBuy);
+router.post("/trades/buy", requiresLogin, tradeController.createTrade);
+
 // router.get("/transactions/sell", requiresLogin, transactionController.showSell);
 router.get("/trades/:id", requiresLogin, tradeController.showDetail);
 

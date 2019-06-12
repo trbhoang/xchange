@@ -12,6 +12,15 @@ async function transferToken(user, amount) {
     }
 }
 
+async function verifyPayment(txId) {
+    try {
+        const isValid = await getAndVerifyTransaction(txId);
+        return isValid;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 async function verifyPaymentAndTransferToken(user, txId) {
     const session = await mongoose.startSession();
     try {
@@ -32,3 +41,5 @@ async function verifyPaymentAndTransferToken(user, txId) {
         throw err;
     }
 }
+
+module.exports = { verifyPayment };
